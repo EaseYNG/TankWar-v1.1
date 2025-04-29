@@ -42,12 +42,15 @@ public class DifficultyPanel extends APanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (background != null) {
-            // 绘制图片
-            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
-        } else {
-            g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(0, 0, getWidth(), getHeight());
+        System.out.println("Painting " + getClass().getSimpleName());
+        if(this.isShowing()) {
+            if (background != null) {
+                // 绘制图片
+                g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
         }
     }
 }
