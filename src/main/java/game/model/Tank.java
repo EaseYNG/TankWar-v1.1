@@ -3,20 +3,28 @@ package main.java.game.model;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.imageio.ImageIO;
 
-public class Tank {
+public class Tank implements AMove {
+    // 坦克基本属性
     public int ax;
-    public int ay;
+    public int ay; // 坐标
     public TankType atype;
     public Direction adir;
     public int speed;
     public int health;
     public int attack;
-    public final int WIDTH = 17, HEIGHT = 17;
-    public BufferedImage[] spritesF;
-    public BufferedImage[] spritesS;
+
+    public final int AMMO = 5; // 默认弹药5
+    public int currentAmmo; // 目前弹药
+    public AtomicBoolean isEmpty = new AtomicBoolean(false); // 弹夹是否为空
+
+    public static int WIDTH = 17, HEIGHT = 17;
+
 
     // constructor
     public Tank(int x, int y) {
@@ -27,95 +35,8 @@ public class Tank {
         this.health = atype.getHealth();
         this.attack = atype.getAttack();
         this.adir = Direction.UP; // 初始方向
-        loadImageF(atype);
-        loadImageS(atype);
     }
 
-    // 读取第一帧
-    public void loadImageF(TankType t) {
-        spritesF = new BufferedImage[4];
-        if(t != null) {
-            switch (atype) {
-                case HEAVY:
-                    for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FH_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesF[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    break;
-                case MEDIUM:
-                    for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FM_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesF[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    break;
-                case LIGHT:
-                    for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FL_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesF[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    // 读取第二帧
-    public void loadImageS(TankType t) {
-        spritesS = new BufferedImage[4];
-        if(t != null) {
-            switch (atype) {
-                case HEAVY:
-                    for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SH_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesS[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    break;
-                case MEDIUM:
-                    for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SM_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesS[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    break;
-                case LIGHT:
-                    for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SL_%d.png", i);
-                        File f = new File(input);
-                        try {
-                            spritesS[i] = ImageIO.read(f);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-                    break;
-            }
-        }
-
-    }
     
     public void setAdir(Direction dir) {
         this.adir = dir;
@@ -143,6 +64,7 @@ public class Tank {
         return ay;
     }
 
+    @Override
     public void move() {
         switch (this.adir) {
             case Direction.UP -> this.ay -= this.speed;
@@ -153,7 +75,6 @@ public class Tank {
         // 碰到则静止
         this.ax = Math.max(WIDTH, Math.min(this.ax, 800-WIDTH));
         this.ay = Math.max(HEIGHT, Math.min(this.ay, 600-HEIGHT));
-
 
     }
 }

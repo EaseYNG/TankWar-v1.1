@@ -19,8 +19,10 @@ public class GameController {
         nowMap = GameConfig.getInstance().getSelectedMap();
         customTank = TankFactory.createCustomTank();
         enemyTanks = new ArrayList<Tank>();
-        enemyTanks.add(TankFactory.createEnemyTank());
-        
+
+        for(int i=0;i<GameConfig.getInstance().getSelectedDifficuly().getEnemyNum();i++) {
+            enemyTanks.add(TankFactory.createEnemyTank());
+        }
 
     }
     
