@@ -18,8 +18,10 @@ public class Tank {
     public BufferedImage[] spritesF;
     public BufferedImage[] spritesS;
 
-    // constuctor
-    public Tank() {
+    // constructor
+    public Tank(int x, int y) {
+        this.ax = x;
+        this.ay = y;
         this.atype = getType();
         this.speed = atype.getSpeed();
         this.health = atype.getHealth();
@@ -139,5 +141,19 @@ public class Tank {
     }
     public int getY() {
         return ay;
+    }
+
+    public void move() {
+        switch (this.adir) {
+            case Direction.UP -> this.ay -= this.speed;
+            case Direction.RIGHT -> this.ax += this.speed;
+            case Direction.DOWN -> this.ay += this.speed;
+            case Direction.LEFT -> this.ax -= this.speed;
+        }
+        // 碰到则静止
+        this.ax = Math.max(WIDTH, Math.min(this.ax, 800-WIDTH));
+        this.ay = Math.max(HEIGHT, Math.min(this.ay, 600-HEIGHT));
+
+
     }
 }
