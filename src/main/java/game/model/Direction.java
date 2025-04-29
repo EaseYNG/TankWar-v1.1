@@ -8,19 +8,5 @@ public enum Direction {
     Direction(int dir) {
         this.dir = dir;
     }
-    public Direction getDir() {
-        switch (dir) {
-            case 0:
-                return UP;
-            case 1:
-                return RIGHT;
-            case 2:
-                return DOWN;
-            case 3:
-                return LEFT;
-            default:
-                break;
-        }
-        return null;
-    }
+
 }
