@@ -1,13 +1,7 @@
 package main.java.game.model;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.imageio.ImageIO;
 
 public class Tank implements AMove {
     // 坦克基本属性
@@ -19,9 +13,10 @@ public class Tank implements AMove {
     public int health;
     public int attack;
 
-    public final int AMMO = 5; // 默认弹药5
-    public int currentAmmo; // 目前弹药
-    public AtomicBoolean isEmpty = new AtomicBoolean(false); // 弹夹是否为空
+    public final int MAX_AMMO = 5; // 默认弹药5
+    public int currentAmmo = 0; // 目前弹药 - index = 0
+    public List<Bullet> ammos = new ArrayList<>(4);
+    public boolean isEmpty = false; // 弹夹是否为空
 
     public static int WIDTH = 17, HEIGHT = 17;
 
@@ -35,6 +30,11 @@ public class Tank implements AMove {
         this.health = atype.getHealth();
         this.attack = atype.getAttack();
         this.adir = Direction.UP; // 初始方向
+
+        // load
+        for(int i = 0;i<MAX_AMMO;i++) {
+            ammos.add(new Bullet(ax, ay));
+        }
     }
 
     
@@ -76,5 +76,26 @@ public class Tank implements AMove {
         this.ax = Math.max(WIDTH, Math.min(this.ax, 800-WIDTH));
         this.ay = Math.max(HEIGHT, Math.min(this.ay, 600-HEIGHT));
 
+    }
+
+    // 换弹
+    public void reload() {
+        isEmpty = false;
+        currentAmmo = 0;
+    }
+
+    // 射击
+    public void shoot() {
+        if(!isEmpty) {
+            // 刷新弹药位置及方向
+            ammos.get(currentAmmo).setBx(this.getX());
+            ammos.get(currentAmmo).setBy(this.getY());
+            ammos.get(currentAmmo).setBdir(this.getDir());
+            // 射击
+            ammos.get(currentAmmo).move();
+            // 刷新弹药数
+            currentAmmo++;
+            if(currentAmmo == 4) isEmpty = true;
+        }
     }
 }

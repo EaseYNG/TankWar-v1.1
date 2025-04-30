@@ -19,6 +19,14 @@ public class Bullet implements AMove {
         this.bdir = dir;
     }
 
+    public void setBx(int x) {
+        this.bx = x;
+    }
+
+    public void setBy(int y) {
+        this.by = y;
+    }
+
     public int getBx() {
         return this.bx;
     }
