@@ -37,7 +37,7 @@ public class Tank implements AMove {
         }
     }
 
-    
+
     public void setAdir(Direction dir) {
         this.adir = dir;
     }
