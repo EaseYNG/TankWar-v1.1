@@ -94,6 +94,7 @@ public class GameFrame extends JFrame {
                                 GameConfig.getInstance().setCustomTankType(TankType.LIGHT);
                             }
                             case "Difficulty" -> switchPanelTo("DIFFICULTY");
+                            case "Tank" -> switchPanelTo("CHOOSETANK");
                             case "dust_3" -> {
                                 switchPanelTo("PLAY");
                                 GameConfig.getInstance().setSelectedMap(Maps.DUST_3);
@@ -105,7 +106,7 @@ public class GameFrame extends JFrame {
         }
     }
 
-    private void switchPanelTo(String panelName) {
+    public void switchPanelTo(String panelName) {
         System.out.println("Switching to: " + panelName);
 
         // 设置其他面板可见性

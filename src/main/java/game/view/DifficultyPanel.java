@@ -3,6 +3,8 @@ package main.java.game.view;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +15,7 @@ public class DifficultyPanel extends APanel {
     private List<JButton> buttons = new ArrayList<>();
     private File f;
     private BufferedImage background;
+
 
     public DifficultyPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -27,14 +30,17 @@ public class DifficultyPanel extends APanel {
         buttons.add(ButtonFactory.createButton("Easy"));
         buttons.add(ButtonFactory.createButton("Medium"));
         buttons.add(ButtonFactory.createButton("Hard"));
+        buttons.add(ButtonFactory.createButton("Menu"));
 
         add(Box.createVerticalGlue());
         add(Box.createVerticalGlue());
+
         for (JButton button : buttons) {
             button.setAlignmentX(Component.CENTER_ALIGNMENT); // 居中
             add(button);
             add(Box.createVerticalStrut(50)); // 按钮间间距
         }
+
         add(Box.createVerticalGlue());
 
     }

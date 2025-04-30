@@ -16,6 +16,7 @@ public class ChooseTankPanel extends APanel {
     private final List<ImageIcon> tanks = new ArrayList<>(3);
     private final JPanel imagePanel = new JPanel();
     private final JPanel buttonPanel = new JPanel();
+    private final JButton bottomButton = ButtonFactory.createButton("Difficulty");
 
     public ChooseTankPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -57,17 +58,20 @@ public class ChooseTankPanel extends APanel {
             buttonPanel.add(Box.createHorizontalGlue());
         }
 
-
         add(Box.createVerticalGlue());
         add(imagePanel);
         add(Box.createVerticalStrut(50));
         add(buttonPanel);
+        add(Box.createHorizontalStrut(200));
+        add(bottomButton);
+        bottomButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalGlue());
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        System.out.println("Painting " + getClass().getSimpleName());
         if (background != null) {
             g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         } else {
