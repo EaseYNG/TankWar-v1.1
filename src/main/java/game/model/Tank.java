@@ -33,7 +33,9 @@ public class Tank implements AMove {
 
         // load
         for(int i = 0;i<MAX_AMMO;i++) {
-            ammos.add(new Bullet(ax, ay));
+            Bullet b = new Bullet(ax, ay);
+            b.setAttack(this.attack);
+            ammos.add(b);
         }
     }
 
