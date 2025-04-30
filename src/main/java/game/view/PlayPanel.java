@@ -2,12 +2,13 @@ package main.java.game.view;
 
 import main.java.game.model.Direction;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class PlayPanel extends APanel {
-
+    private GridBagLayout layout;
 
 }
 
@@ -40,4 +41,8 @@ class InputController {
     public KeyListener reloadController = new KeyAdapter() {
 
     };
+
+    public InputController() {}
+
+
 }
