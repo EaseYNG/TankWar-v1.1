@@ -13,17 +13,14 @@ public class GameController {
     private Maps nowMap;
     private GameThread gameThread = new GameThread();
     
-    
-
     public GameController() {
         nowMap = GameConfig.getInstance().getSelectedMap();
         customTank = TankFactory.createCustomTank();
-        enemyTanks = new ArrayList<Tank>();
+        enemyTanks = new ArrayList<>(GameConfig.getInstance().getSelectedDifficuly().getEnemyNum()-1);
 
         for(int i=0;i<GameConfig.getInstance().getSelectedDifficuly().getEnemyNum();i++) {
             enemyTanks.add(TankFactory.createEnemyTank());
         }
-
     }
     
     

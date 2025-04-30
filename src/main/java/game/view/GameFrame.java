@@ -81,24 +81,8 @@ public class GameFrame extends JFrame {
                                 switchPanelTo("CHOOSETANK");
                                 GameConfig.getInstance().setSelectedDifficuly(Difficulty.HARD);
                             }
-                            case "HEAVY" -> {
-                                switchPanelTo("CHOOSEMAP");
-                                GameConfig.getInstance().setCustomTankType(TankType.HEAVY);
-                            }
-                            case "MEDIUM" -> {
-                                switchPanelTo("CHOOSEMAP");
-                                GameConfig.getInstance().setCustomTankType(TankType.MEDIUM);
-                            }
-                            case "LIGHT" -> {
-                                switchPanelTo("CHOOSEMAP");
-                                GameConfig.getInstance().setCustomTankType(TankType.LIGHT);
-                            }
                             case "Difficulty" -> switchPanelTo("DIFFICULTY");
                             case "Tank" -> switchPanelTo("CHOOSETANK");
-                            case "dust_3" -> {
-                                switchPanelTo("PLAY");
-                                GameConfig.getInstance().setSelectedMap(Maps.DUST_3);
-                            }
                         }
                     }
                 });

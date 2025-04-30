@@ -1,8 +1,13 @@
 package main.java.game.view;
 
+import main.java.game.model.GameConfig;
+import main.java.game.model.TankType;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +71,31 @@ public class ChooseTankPanel extends APanel {
         add(bottomButton);
         bottomButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalGlue());
+
+        for(Component c : buttonPanel.getComponents()) {
+            if(c instanceof JButton) {
+                ((JButton) c).addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String command = ((JButton) c).getText();
+                        switch (command) {
+                            case "HEAVY" -> {
+                                GameFrame.getInstance().switchPanelTo("CHOOSEMAP");
+                                GameConfig.getInstance().setCustomTankType(TankType.HEAVY);
+                            }
+                            case "MEDIUM" -> {
+                                GameFrame.getInstance().switchPanelTo("CHOOSEMAP");
+                                GameConfig.getInstance().setCustomTankType(TankType.MEDIUM);
+                            }
+                            case "LIGHT" -> {
+                                GameFrame.getInstance().switchPanelTo("CHOOSEMAP");
+                                GameConfig.getInstance().setCustomTankType(TankType.LIGHT);
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
