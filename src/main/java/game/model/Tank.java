@@ -52,11 +52,23 @@ public class Tank implements AMove {
     public Direction getDir() {
         return adir;
     }
-    public void setType(TankType t) {
+    public void setType(TankType t) { // 工厂方法调用设置基础属性
         this.atype = t;
         this.attack = t.getAttack();
         this.health = t.getHealth();
         this.speed = t.getSpeed();
+    }
+
+    public int getAttack() {
+        return this.attack;
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
+
+    public int getSpeed() {
+        return this.speed;
     }
     public TankType getType() {
         return atype;
