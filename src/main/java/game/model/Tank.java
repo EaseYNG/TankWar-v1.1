@@ -31,10 +31,6 @@ public class Tank implements AMove {
     public Tank(int x, int y) {
         this.ax = x;
         this.ay = y;
-        this.atype = getType();
-        this.speed = atype.getSpeed();
-        this.health = atype.getHealth();
-        this.attack = atype.getAttack();
         this.adir = Direction.UP; // 初始方向
 
         // load
@@ -58,10 +54,14 @@ public class Tank implements AMove {
     }
     public void setType(TankType t) {
         this.atype = t;
+        this.attack = t.getAttack();
+        this.health = t.getHealth();
+        this.speed = t.getSpeed();
     }
     public TankType getType() {
         return atype;
     }
+
 
     public void setX(int x) {
         this.ax = x;
