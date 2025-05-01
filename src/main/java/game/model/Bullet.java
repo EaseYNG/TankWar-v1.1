@@ -1,14 +1,21 @@
 package main.java.game.model;
 
+import main.java.game.manager.SpritesManager;
+
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 public class Bullet implements AMove {
     private int bx, by, attack;
     private Direction bdir;
     private int bspeed = 8;
+    private List<BufferedImage> sprites;
 
 
     public Bullet(int x, int y) {
         this.bx = x;
         this.by = y;
+        sprites = SpritesManager.getInstance().loadBullet(this.getBdir());
     }
 
     public void setAttack(int attack) {
@@ -17,6 +24,10 @@ public class Bullet implements AMove {
 
     public void setBdir(Direction dir) {
         this.bdir = dir;
+    }
+
+    public Direction getBdir() {
+        return this.bdir;
     }
 
     public void setBx(int x) {
@@ -33,6 +44,10 @@ public class Bullet implements AMove {
 
     public int getBy() {
         return this.by;
+    }
+
+    public List<BufferedImage> getSprites() {
+        return sprites;
     }
 
 

@@ -1,48 +1,51 @@
 package main.java.game.view;
 
-import main.java.game.model.Direction;
+import main.java.game.controller.GameController;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class PlayPanel extends APanel {
+public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
     private GridBagLayout layout;
+    private HUD top = new HUD();
+    private HUD bottom = new HUD();
+    private MapPanel mapPanel = new MapPanel();
 
+
+
+    public PlayPanel() {
+        setPreferredSize(new Dimension(800, 700));
+        setLayout(new BorderLayout());
+
+        add(top, BorderLayout.NORTH);
+        add(bottom, BorderLayout.SOUTH);
+        add(mapPanel, BorderLayout.CENTER);
+    }
 }
 
-class HUD extends APanel{
 
+class MapPanel extends APanel {
+    private GameController gameController = new GameController();
+
+
+    public MapPanel() {
+
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        gameController.drawComponents(g);
+    }
+}
+
+class HUD extends APanel {
+
+    public HUD() {
+        setPreferredSize(new Dimension(800, 50));
+        setBackground(Color.GRAY);
+    }
 }
 
 
 
-class InputController {
-    // WASD - move | R - reload | SPACE - shoot
-    public KeyListener moveController = new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    };
-
-
-    public KeyListener reloadController = new KeyAdapter() {
-
-    };
-
-    public InputController() {}
-
-
-}

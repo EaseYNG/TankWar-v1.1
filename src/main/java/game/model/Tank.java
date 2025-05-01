@@ -1,5 +1,8 @@
 package main.java.game.model;
 
+import main.java.game.manager.SpritesManager;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,9 @@ public class Tank implements AMove {
     public int currentAmmo = 0; // 目前弹药 - index = 0
     public List<Bullet> ammos = new ArrayList<>(4);
     public boolean isEmpty = false; // 弹夹是否为空
+
+    private List<BufferedImage> spritesF;
+    private List<BufferedImage> spritesS;
 
     public static int WIDTH = 17, HEIGHT = 17;
 
@@ -37,6 +43,10 @@ public class Tank implements AMove {
             b.setAttack(this.attack);
             ammos.add(b);
         }
+
+        // loadSprites
+        spritesF = SpritesManager.getInstance().loadTankF(this.getType());
+        spritesS = SpritesManager.getInstance().loadTankS(this.getType());
     }
 
 
@@ -99,5 +109,13 @@ public class Tank implements AMove {
             currentAmmo++;
             if(currentAmmo == 4) isEmpty = true;
         }
+    }
+
+    public List<BufferedImage> getSpritesF() {
+        return spritesF;
+    }
+
+    public List<BufferedImage> getSpritesS() {
+        return spritesS;
     }
 }
