@@ -28,7 +28,7 @@ public class TankFactory {
             case 1 -> t = TankType.MEDIUM;
             case 2 -> t = TankType.LIGHT;
         }
-        enemyTank.setType(t);
+        if (t != null) enemyTank.setType(t);
         return enemyTank;
     }
 }

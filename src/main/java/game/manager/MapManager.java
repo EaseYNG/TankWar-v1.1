@@ -14,6 +14,18 @@ public class MapManager {
         initDefaultMap();
     }
 
+    public MapComponents[][] getGrid() {
+        return grid;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
     // 空地图
     public void initDefaultMap() {
         for(int i=0;i<cols;i++) {

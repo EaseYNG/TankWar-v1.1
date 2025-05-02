@@ -22,16 +22,16 @@ public class SpritesManager {
     // 读取坦克四方向图，游戏面板绘制时调用
     // 读取第一帧
     public List<BufferedImage> loadTankF(TankType t) {
-        List<BufferedImage> spritesF = new ArrayList<>(4);
+        List<BufferedImage> spritesF = new ArrayList<>();
 
         if(t != null) {
             switch (t) {
                 case HEAVY:
                     for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FH_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/FH_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesF.set(i, ImageIO.read(f));
+                            spritesF.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -39,10 +39,10 @@ public class SpritesManager {
                     break;
                 case MEDIUM:
                     for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FM_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/FM_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesF.set(i, ImageIO.read(f));
+                            spritesF.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -50,10 +50,10 @@ public class SpritesManager {
                     break;
                 case LIGHT:
                     for(int i=0;i<4;i++) {
-                        String input = String.format("src/main/java/game/resources/FL_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/FL_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesF.set(i, ImageIO.read(f));
+                            spritesF.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -71,10 +71,10 @@ public class SpritesManager {
             switch (t) {
                 case HEAVY:
                     for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SH_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/SH_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesS.set(i, ImageIO.read(f));
+                            spritesS.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -82,10 +82,10 @@ public class SpritesManager {
                     break;
                 case MEDIUM:
                     for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SM_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/SM_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesS.set(i, ImageIO.read(f));
+                            spritesS.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -93,10 +93,10 @@ public class SpritesManager {
                     break;
                 case LIGHT:
                     for (int i = 0; i < 4; i++) {
-                        String input = String.format("src/main/java/game/resources/SL_%d.png", i);
+                        String input = String.format("src/main/resources/Sprites/SL_%d.png", i);
                         File f = new File(input);
                         try {
-                            spritesS.set(i, ImageIO.read(f));
+                            spritesS.add(ImageIO.read(f));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

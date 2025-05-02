@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Bullet implements AMove {
     private int bx, by, attack;
-    private Direction bdir;
+    private Direction bdir = Direction.UP; // 默认初始化
     private int bspeed = 8;
     private List<BufferedImage> sprites;
 

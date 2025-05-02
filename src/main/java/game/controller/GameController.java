@@ -8,9 +8,7 @@ import main.java.game.model.Direction;
 import main.java.game.model.GameConfig;
 import main.java.game.model.Tank;
 
-import javax.swing.*;
-
-public class GameController extends JPanel {
+public class GameController {
     private Tank customTank;
     private List<Tank> enemyTanks;
     private boolean isPaused = false;
@@ -30,7 +28,7 @@ public class GameController extends JPanel {
 
     // MapPanel调用
     public void drawComponents(Graphics g) {
-        super.paintComponent(g);
+
         // draw tanks
         switch (customTank.getDir()) {
             case Direction.UP -> g.drawImage(customTank.getSpritesF().get(0), customTank.getX(), customTank.getY(), null);

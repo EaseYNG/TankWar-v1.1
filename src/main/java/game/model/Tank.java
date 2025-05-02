@@ -10,7 +10,7 @@ public class Tank implements AMove {
     // 坦克基本属性
     public int ax;
     public int ay; // 坐标
-    public TankType atype;
+    public TankType atype = TankType.HEAVY;
     public Direction adir;
     public int speed;
     public int health;
@@ -40,9 +40,7 @@ public class Tank implements AMove {
             ammos.add(b);
         }
 
-        // loadSprites
-        spritesF = SpritesManager.getInstance().loadTankF(this.getType());
-        spritesS = SpritesManager.getInstance().loadTankS(this.getType());
+
     }
 
 
@@ -57,6 +55,10 @@ public class Tank implements AMove {
         this.attack = t.getAttack();
         this.health = t.getHealth();
         this.speed = t.getSpeed();
+
+        // loadSprites
+        spritesF = SpritesManager.getInstance().loadTankF(this.atype);
+        spritesS = SpritesManager.getInstance().loadTankS(this.atype);
     }
 
     public int getAttack() {
