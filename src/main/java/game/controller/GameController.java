@@ -57,6 +57,14 @@ public class GameController {
         }
 
     }
+
+    public Tank getCustomTank() {
+        return customTank;
+    }
+
+    public List<Tank> getEnemyTanks() {
+        return enemyTanks;
+    }
 }
 
 

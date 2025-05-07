@@ -40,7 +40,6 @@ public class Tank implements AMove {
             ammos.add(b);
         }
 
-
     }
 
 

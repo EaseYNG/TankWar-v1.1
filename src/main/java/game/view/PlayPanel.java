@@ -2,10 +2,18 @@ package main.java.game.view;
 
 import main.java.game.controller.GameController;
 import main.java.game.manager.MapManager;
+import main.java.game.model.Direction;
+import main.java.game.model.GameConfig;
+import main.java.game.model.Tank;
 
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Random;
 
 
 public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
@@ -13,8 +21,6 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
     private HUD bottom = new HUD();
     private MapPanel mapPanel = new MapPanel();
     private JButton pause = ButtonFactory.createButton("||");
-
-
 
 
     public PlayPanel() {
@@ -27,8 +33,6 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
 
         top.add(pause);
 
-        Timer timer = new Timer(16, e -> mapPanel.repaint());
-        timer.start();
     }
 }
 
@@ -38,17 +42,64 @@ class MapPanel extends APanel {
     private GameController gameController = new GameController();
     private MapManager mapManager;
 
-
-
     public MapPanel() {
+        setVisible(true);
         setPreferredSize(new Dimension(800, 600));
         mapManager = new MapManager(600/GRID_WIDTH, 800/GRID_WIDTH); // 15 20
+        setFocusable(true);
+        requestFocusInWindow();
+
         // 初始化地图元素
         //switch (GameConfig.getInstance().getSelectedMap()) {
             //case Maps.DUST_3 -> mapManager.dust_3();
         //}
 
+        // 键盘监听器
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleCustomTurning(e.getKeyCode());
+            }
+        });
 
+        Timer timer = new Timer(16, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+                gameController.getCustomTank().move();
+                for(int i=0;i<gameController.getEnemyTanks().size();i++) {
+                    gameController.getEnemyTanks().get(i).move();
+                    handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i)); // 随机移动和射击
+                }
+            }
+        });
+        timer.start();
+    }
+
+    private void handleCustomTurning(int command) {
+        Tank custom = gameController.getCustomTank();
+        switch (command) {
+            case KeyEvent.VK_W -> custom.setAdir(Direction.UP);
+            case KeyEvent.VK_D -> custom.setAdir(Direction.RIGHT);
+            case KeyEvent.VK_S -> custom.setAdir(Direction.DOWN);
+            case KeyEvent.VK_A -> custom.setAdir(Direction.LEFT);
+        }
+    }
+
+    private void handleEnemyTankBehaviour(Tank enemy) {
+        Random rnd = new Random();
+        if(rnd.nextInt(0,101)<=2) {
+            switch (rnd.nextInt(0,4)) {
+                case 0 -> enemy.setAdir(Direction.UP);
+                case 1 -> enemy.setAdir(Direction.RIGHT);
+                case 2 -> enemy.setAdir(Direction.DOWN);
+                case 3 -> enemy.setAdir(Direction.LEFT);
+            }
+        }
+
+        if(rnd.nextInt(0,101)<=4) {
+            enemy.shoot();
+        }
     }
 
     @Override
