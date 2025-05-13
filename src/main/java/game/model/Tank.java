@@ -8,6 +8,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+定义坦克类，包含坐标、类型、生命值、速度、方向、伤害等属性
+构造器参数为坐标，并对方向进行初始化
+
+ */
 public class Tank implements AMove {
     // 坦克基本属性
     public int ax;
@@ -122,7 +127,7 @@ public class Tank implements AMove {
 
             // 更新弹药逻辑
             currentAmmo++;
-            if (currentAmmo == (MAX_AMMO-1)) {
+            if (currentAmmo == MAX_AMMO) {
                 isEmpty = true;
                 currentAmmo = 0;
             }

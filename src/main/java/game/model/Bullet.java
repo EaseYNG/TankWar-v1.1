@@ -65,10 +65,10 @@ public class Bullet implements AMove {
 
     public void draw(Graphics g) {
         switch (bdir) {
-            case UP -> g.drawImage(sprite, this.bx, this.by-34, 34, 34, null);
-            case RIGHT -> g.drawImage(sprite, this.bx+34, this.by, 34, 34, null);
-            case DOWN -> g.drawImage(sprite, this.bx, this.by+34, 34, 34, null);
-            case LEFT -> g.drawImage(sprite, this.bx-34, this.by, 34, 34, null);
+            case UP -> g.drawImage(sprite, this.bx, this.by-34+17, 34, 34, null);
+            case RIGHT -> g.drawImage(sprite, this.bx+34-17, this.by, 34, 34, null);
+            case DOWN -> g.drawImage(sprite, this.bx, this.by+34-17, 34, 34, null);
+            case LEFT -> g.drawImage(sprite, this.bx-34+17, this.by, 34, 34, null);
         }
     }
 }

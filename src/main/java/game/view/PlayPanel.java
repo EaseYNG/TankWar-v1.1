@@ -37,7 +37,6 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
     }
 }
 
-
 class MapPanel extends APanel {
     private final int GRID_WIDTH = 40;
     private GameController gameController = new GameController();
@@ -55,14 +54,8 @@ class MapPanel extends APanel {
             //case Maps.DUST_3 -> mapManager.dust_3();
         //}
 
-        // 键盘监听器
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleCustomTurning(e.getKeyCode());
-                handleCustomAmmo(e.getKeyCode());
-            }
-        });
+        // 键盘事件处理
+        setupKeyBindings();
 
         Timer timer = new Timer(32, new ActionListener() {
             @Override
@@ -79,20 +72,62 @@ class MapPanel extends APanel {
         timer.start();
     }
 
+    // 处理键位绑定
+    private void setupKeyBindings() {
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
+
+        // 绑定方向键
+        bindKey(inputMap, actionMap, KeyEvent.VK_UP, "UP", () -> handleCustomTurning(KeyEvent.VK_UP));
+        bindKey(inputMap, actionMap, KeyEvent.VK_RIGHT, "RIGHT", () -> handleCustomTurning(KeyEvent.VK_RIGHT));
+        bindKey(inputMap, actionMap, KeyEvent.VK_DOWN, "DOWN", () -> handleCustomTurning(KeyEvent.VK_DOWN));
+        bindKey(inputMap, actionMap, KeyEvent.VK_LEFT, "LEFT", () -> handleCustomTurning(KeyEvent.VK_LEFT));
+
+        // 绑定空格射击和R换弹
+        bindKey(inputMap, actionMap, KeyEvent.VK_SPACE, "SHOOT", () -> handleCustomAmmo(KeyEvent.VK_SPACE));
+        bindKey(inputMap, actionMap, KeyEvent.VK_R, "RELOAD", () -> handleCustomAmmo(KeyEvent.VK_R));
+    }
+
+    private void bindKey(InputMap inputMap, ActionMap actionMap, int keyCode, String actionKey, Runnable action) {
+        inputMap.put(KeyStroke.getKeyStroke(keyCode, 0), actionKey);
+        actionMap.put(actionKey, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                action.run();
+            }
+        });
+    }
+
     private void handleCustomTurning(int command) {
         switch (command) {
-            case KeyEvent.VK_UP -> gameController.getCustomTank().setAdir(Direction.UP);
-            case KeyEvent.VK_RIGHT -> gameController.getCustomTank().setAdir(Direction.RIGHT);
-            case KeyEvent.VK_DOWN -> gameController.getCustomTank().setAdir(Direction.DOWN);
-            case KeyEvent.VK_LEFT -> gameController.getCustomTank().setAdir(Direction.LEFT);
+            case KeyEvent.VK_UP -> {
+                gameController.getCustomTank().setAdir(Direction.UP);
+                System.out.println("UP");
+            }
+            case KeyEvent.VK_RIGHT -> {
+                gameController.getCustomTank().setAdir(Direction.RIGHT);
+                System.out.println("RIGHT");
+            }
+            case KeyEvent.VK_DOWN -> {
+                gameController.getCustomTank().setAdir(Direction.DOWN);
+                System.out.println("DOWN");
+            }
+            case KeyEvent.VK_LEFT -> {
+                gameController.getCustomTank().setAdir(Direction.LEFT);
+                System.out.println("LEFT");
+            }
         }
     }
 
     private void handleCustomAmmo(int command) {
         switch (command) {
-            case KeyEvent.VK_R -> gameController.getCustomTank().reload();
+            case KeyEvent.VK_R -> {
+                gameController.getCustomTank().reload();
+                System.out.println("RELOADING");
+            }
             case KeyEvent.VK_SPACE -> {
                 gameController.getCustomTank().shoot(gameController);
+                System.out.println("SHOOTING");
             }
         }
     }
@@ -108,7 +143,7 @@ class MapPanel extends APanel {
             }
         }
 
-        if(rnd.nextInt(0,101)<=4) {
+        if(rnd.nextDouble(0,1)<=0.01) {
             enemy.shoot(gameController);
             enemy.isEmpty = false; // 敌人无空弹匣逻辑
         }
