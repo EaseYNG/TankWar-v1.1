@@ -2,20 +2,23 @@ package main.java.game.model;
 
 import main.java.game.manager.SpritesManager;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Bullet implements AMove {
     private int bx, by, attack;
-    private Direction bdir = Direction.UP; // 默认初始化
-    private int bspeed = 8;
-    private List<BufferedImage> sprites;
+    private Direction bdir; // 默认初始化
+    private int bspeed = 4;
+    private BufferedImage sprite;
+    public boolean go = false;
 
 
-    public Bullet(int x, int y) {
+    public Bullet(int x, int y, Direction dir) {
         this.bx = x;
         this.by = y;
-        sprites = SpritesManager.getInstance().loadBullet(this.getBdir());
+        this.bdir = dir;
+        sprite = SpritesManager.getInstance().loadBullet(); // 加载子弹图像
     }
 
     public void setAttack(int attack) {
@@ -46,11 +49,9 @@ public class Bullet implements AMove {
         return this.by;
     }
 
-    public List<BufferedImage> getSprites() {
-        return sprites;
+    public BufferedImage getSprites() {
+        return sprite;
     }
-
-
 
     @Override
     public void move() {
@@ -60,6 +61,14 @@ public class Bullet implements AMove {
             case Direction.DOWN -> by += bspeed;
             case Direction.LEFT -> bx -= bspeed;
         }
+    }
 
+    public void draw(Graphics g) {
+        switch (bdir) {
+            case UP -> g.drawImage(sprite, this.bx, this.by-34, 34, 34, null);
+            case RIGHT -> g.drawImage(sprite, this.bx+34, this.by, 34, 34, null);
+            case DOWN -> g.drawImage(sprite, this.bx, this.by+34, 34, 34, null);
+            case LEFT -> g.drawImage(sprite, this.bx-34, this.by, 34, 34, null);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package main.java.game.model;
 
+import main.java.game.controller.GameController;
 import main.java.game.manager.SpritesManager;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,10 @@ public class Tank implements AMove {
     public int speed;
     public int health;
     public int attack;
-
     public final int MAX_AMMO = 5; // 默认弹药5
     public int currentAmmo = 0; // 目前弹药 - index = 0
-    public List<Bullet> ammos = new ArrayList<>(4);
     public boolean isEmpty = false; // 弹夹是否为空
+
 
     private List<BufferedImage> spritesF;
     private List<BufferedImage> spritesS;
@@ -33,13 +34,6 @@ public class Tank implements AMove {
         this.ay = y;
         this.adir = Direction.UP; // 初始方向
 
-        // load
-        for(int i = 0;i<MAX_AMMO;i++) {
-            Bullet b = new Bullet(ax, ay);
-            b.setAttack(this.attack);
-            ammos.add(b);
-        }
-
     }
 
 
@@ -50,11 +44,12 @@ public class Tank implements AMove {
         return adir;
     }
     public void setType(TankType t) { // 工厂方法调用设置基础属性
-        this.atype = t;
-        this.attack = t.getAttack();
-        this.health = t.getHealth();
-        this.speed = t.getSpeed();
-
+        if(t!=null){
+            this.atype = t;
+            this.attack = t.getAttack();
+            this.health = t.getHealth();
+            this.speed = t.getSpeed();
+        }
         // loadSprites
         spritesF = SpritesManager.getInstance().loadTankF(this.atype);
         spritesS = SpritesManager.getInstance().loadTankS(this.atype);
@@ -109,18 +104,28 @@ public class Tank implements AMove {
         currentAmmo = 0;
     }
 
+    // 绘制
+    public void draw(Graphics g) {
+        switch (this.getDir()) {
+            case Direction.UP -> g.drawImage(this.getSpritesF().get(0), this.getX(), this.getY(), null);
+            case Direction.RIGHT -> g.drawImage(this.getSpritesF().get(1), this.getX(), this.getY(), null);
+            case Direction.DOWN -> g.drawImage(this.getSpritesF().get(2), this.getX(), this.getY(), null);
+            case Direction.LEFT -> g.drawImage(this.getSpritesF().get(3), this.getX(), this.getY(), null);
+        }
+    }
+
     // 射击
-    public void shoot() {
-        if(!isEmpty) {
-            // 刷新弹药位置及方向
-            ammos.get(currentAmmo).setBx(this.getX());
-            ammos.get(currentAmmo).setBy(this.getY());
-            ammos.get(currentAmmo).setBdir(this.getDir());
-            // 射击
-            ammos.get(currentAmmo).move();
-            // 刷新弹药数
+    public void shoot(GameController controller) {
+        if (!isEmpty) {
+            Bullet bullet = new Bullet(this.ax, this.ay, this.adir);
+            controller.addBullet(bullet);
+
+            // 更新弹药逻辑
             currentAmmo++;
-            if(currentAmmo == 4) isEmpty = true;
+            if (currentAmmo == (MAX_AMMO-1)) {
+                isEmpty = true;
+                currentAmmo = 0;
+            }
         }
     }
 

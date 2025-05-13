@@ -2,10 +2,6 @@ package main.java.game.view;
 
 import main.java.game.model.Difficulty;
 import main.java.game.model.GameConfig;
-import main.java.game.model.Maps;
-import main.java.game.model.TankType;
-import main.java.game.view.APanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -71,15 +67,15 @@ public class GameFrame extends JFrame {
                             case "Menu" -> switchPanelTo("MENU");
                             case "Easy" -> {
                                 switchPanelTo("CHOOSETANK");
-                                GameConfig.getInstance().setSelectedDifficuly(Difficulty.EASY);
+                                GameConfig.getInstance().setSelectedDifficulty(Difficulty.EASY);
                             }
                             case "Medium" -> {
                                 switchPanelTo("CHOOSETANK");
-                                GameConfig.getInstance().setSelectedDifficuly(Difficulty.MEDIUM);
+                                GameConfig.getInstance().setSelectedDifficulty(Difficulty.MEDIUM);
                             }
                             case "Hard" -> {
                                 switchPanelTo("CHOOSETANK");
-                                GameConfig.getInstance().setSelectedDifficuly(Difficulty.HARD);
+                                GameConfig.getInstance().setSelectedDifficulty(Difficulty.HARD);
                             }
                             case "Difficulty" -> switchPanelTo("DIFFICULTY");
                             case "Tank" -> switchPanelTo("CHOOSETANK");

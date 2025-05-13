@@ -108,16 +108,17 @@ public class SpritesManager {
         return spritesS;
     }
 
-    public List<BufferedImage> loadBullet(Direction dir) {
-        List<BufferedImage> bullets = new ArrayList<>(4);
-        if(dir != null) {
-            switch (dir) {
-                case UP -> {
-
-                }
-            }
+    public BufferedImage loadBullet() {
+        BufferedImage img = null;
+        File f = new File("src/main/resources/Sprites/insect_sprite.png");
+        try {
+            img = ImageIO.read(f);
+            img = img.getSubimage(5*34, 6*34, 34, 34);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        return bullets;
+        BufferedImage bulletImage = img;
+        return bulletImage;
     }
 }

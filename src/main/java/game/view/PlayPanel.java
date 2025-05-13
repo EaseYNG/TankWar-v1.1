@@ -30,6 +30,7 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
         add(top, BorderLayout.NORTH);
         add(bottom, BorderLayout.SOUTH);
         add(mapPanel, BorderLayout.CENTER);
+        mapPanel.requestFocusInWindow();
 
         top.add(pause);
 
@@ -43,11 +44,11 @@ class MapPanel extends APanel {
     private MapManager mapManager;
 
     public MapPanel() {
-        setVisible(true);
         setPreferredSize(new Dimension(800, 600));
         mapManager = new MapManager(600/GRID_WIDTH, 800/GRID_WIDTH); // 15 20
         setFocusable(true);
         requestFocusInWindow();
+        setVisible(true);
 
         // 初始化地图元素
         //switch (GameConfig.getInstance().getSelectedMap()) {
@@ -59,14 +60,16 @@ class MapPanel extends APanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 handleCustomTurning(e.getKeyCode());
+                handleCustomAmmo(e.getKeyCode());
             }
         });
 
-        Timer timer = new Timer(16, new ActionListener() {
+        Timer timer = new Timer(32, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
                 gameController.getCustomTank().move();
+                gameController.updateBullets(); // 更新子弹位置
                 for(int i=0;i<gameController.getEnemyTanks().size();i++) {
                     gameController.getEnemyTanks().get(i).move();
                     handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i)); // 随机移动和射击
@@ -77,16 +80,24 @@ class MapPanel extends APanel {
     }
 
     private void handleCustomTurning(int command) {
-        Tank custom = gameController.getCustomTank();
         switch (command) {
-            case KeyEvent.VK_W -> custom.setAdir(Direction.UP);
-            case KeyEvent.VK_D -> custom.setAdir(Direction.RIGHT);
-            case KeyEvent.VK_S -> custom.setAdir(Direction.DOWN);
-            case KeyEvent.VK_A -> custom.setAdir(Direction.LEFT);
+            case KeyEvent.VK_UP -> gameController.getCustomTank().setAdir(Direction.UP);
+            case KeyEvent.VK_RIGHT -> gameController.getCustomTank().setAdir(Direction.RIGHT);
+            case KeyEvent.VK_DOWN -> gameController.getCustomTank().setAdir(Direction.DOWN);
+            case KeyEvent.VK_LEFT -> gameController.getCustomTank().setAdir(Direction.LEFT);
         }
     }
 
-    private void handleEnemyTankBehaviour(Tank enemy) {
+    private void handleCustomAmmo(int command) {
+        switch (command) {
+            case KeyEvent.VK_R -> gameController.getCustomTank().reload();
+            case KeyEvent.VK_SPACE -> {
+                gameController.getCustomTank().shoot(gameController);
+            }
+        }
+    }
+
+    private void handleEnemyTankBehaviour(Tank enemy) { // 随机变向和射击
         Random rnd = new Random();
         if(rnd.nextInt(0,101)<=2) {
             switch (rnd.nextInt(0,4)) {
@@ -98,7 +109,8 @@ class MapPanel extends APanel {
         }
 
         if(rnd.nextInt(0,101)<=4) {
-            enemy.shoot();
+            enemy.shoot(gameController);
+            enemy.isEmpty = false; // 敌人无空弹匣逻辑
         }
     }
 
@@ -129,13 +141,9 @@ class MapPanel extends APanel {
 }
 
 class HUD extends APanel {
-
     public HUD() {
-        setVisible(true);
         setPreferredSize(new Dimension(800, 30));
         setBackground(Color.GRAY);
+        setVisible(true);
     }
 }
-
-
-
