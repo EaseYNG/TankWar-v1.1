@@ -57,16 +57,13 @@ class MapPanel extends APanel {
         // 键盘事件处理
         setupKeyBindings();
 
-        Timer timer = new Timer(32, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                repaint();
-                gameController.getCustomTank().move();
-                gameController.updateBullets(); // 更新子弹位置
-                for(int i=0;i<gameController.getEnemyTanks().size();i++) {
-                    gameController.getEnemyTanks().get(i).move();
-                    handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i)); // 随机移动和射击
-                }
+        Timer timer = new Timer(32, e -> {
+            repaint();
+            gameController.getCustomTank().move();
+            gameController.updateBullets(); // 更新子弹位置
+            for(int i=0;i<gameController.getEnemyTanks().size();i++) {
+                gameController.getEnemyTanks().get(i).move();
+                handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i)); // 随机移动和射击
             }
         });
         timer.start();
