@@ -13,15 +13,16 @@ public class GameController {
     private Tank customTank;
     private List<Tank> enemyTanks;
     public boolean isPaused = false;
+    private TankFactory tankFactory = new TankFactory();
     private List<Bullet> bullets = new ArrayList<>();
 
     public GameController() { // 控制坦克和炮弹绘制
 
-        customTank = TankFactory.createCustomTank();
+        customTank = tankFactory.createCustomTank();
         enemyTanks = new ArrayList<>(GameConfig.getInstance().getSelectedDifficulty().getEnemyNum());
 
         for(int i=0;i<GameConfig.getInstance().getSelectedDifficulty().getEnemyNum();i++) {
-            enemyTanks.add(TankFactory.createEnemyTank());
+            enemyTanks.add(tankFactory.createEnemyTank());
         }
 
     }

@@ -3,8 +3,11 @@ package main.java.game.model;
 import main.java.game.controller.GameController;
 import main.java.game.manager.SpritesManager;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class Tank implements AMove {
     // 坦克基本属性
     public int ax;
     public int ay; // 坐标
-    public TankType atype = TankType.HEAVY;
+    public TankType atype;
     public Direction adir;
     public int speed;
     public int health;
@@ -34,11 +37,14 @@ public class Tank implements AMove {
 
 
     // constructor
-    public Tank(int x, int y) {
+    public Tank(int x, int y, TankType atype) {
         this.ax = x;
         this.ay = y;
         this.adir = Direction.UP; // 初始方向
-
+        setType(atype); // 设置初始类型 及类型属性
+        // 加载图片
+        spritesF = loadTankF(this.atype);
+        spritesS = loadTankS(this.atype);
     }
 
 
@@ -56,8 +62,6 @@ public class Tank implements AMove {
             this.speed = t.getSpeed();
         }
         // loadSprites
-        spritesF = SpritesManager.getInstance().loadTankF(this.atype);
-        spritesS = SpritesManager.getInstance().loadTankS(this.atype);
     }
 
     public int getAttack() {
@@ -139,6 +143,95 @@ public class Tank implements AMove {
     }
 
     public List<BufferedImage> getSpritesS() {
+        return spritesS;
+    }
+
+    // 读取图片
+    // 读取第一帧
+    public List<BufferedImage> loadTankF(TankType t) {
+        List<BufferedImage> spritesF = new ArrayList<>();
+
+        if(t != null) {
+            switch (t) {
+                case HEAVY:
+                    for(int i=0;i<4;i++) {
+                        String input = String.format("src/main/resources/Sprites/FH_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesF.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case MEDIUM:
+                    for(int i=0;i<4;i++) {
+                        String input = String.format("src/main/resources/Sprites/FM_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesF.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case LIGHT:
+                    for(int i=0;i<4;i++) {
+                        String input = String.format("src/main/resources/Sprites/FL_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesF.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+            }
+        }
+        return spritesF;
+    }
+
+    // 读取第二帧
+    public List<BufferedImage> loadTankS(TankType t) {
+        List<BufferedImage> spritesS = new ArrayList<>(4);
+        if(t != null) {
+            switch (t) {
+                case HEAVY:
+                    for (int i = 0; i < 4; i++) {
+                        String input = String.format("src/main/resources/Sprites/SH_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesS.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case MEDIUM:
+                    for (int i = 0; i < 4; i++) {
+                        String input = String.format("src/main/resources/Sprites/SM_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesS.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    break;
+                case LIGHT:
+                    for (int i = 0; i < 4; i++) {
+                        String input = String.format("src/main/resources/Sprites/SL_%d.png", i);
+                        File f = new File(input);
+                        try {
+                            spritesS.add(ImageIO.read(f));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                    break;
+            }
+        }
         return spritesS;
     }
 }

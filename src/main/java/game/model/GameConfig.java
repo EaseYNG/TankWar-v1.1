@@ -1,11 +1,13 @@
 package main.java.game.model;
 
+import java.util.Objects;
+
 public class GameConfig {
     // 单例模式
     public static final GameConfig gameConfig = new GameConfig();
-    private static TankType customTankType = TankType.MEDIUM; // 默认类型
-    private static Maps selectedMap = Maps.DUST_3;       // 默认地图
-    private static Difficulty selectedDifficulty = Difficulty.MEDIUM;
+    private TankType customTankType;
+    private Maps selectedMap;
+    private Difficulty selectedDifficulty;
 
     private GameConfig() {}
 
@@ -14,21 +16,16 @@ public class GameConfig {
     }
 
     public void setCustomTankType(TankType t) {
-        if (t != null) {
-            customTankType = t;
-        } else {
-            customTankType = TankType.MEDIUM; // 可选：允许通过 null 重置为默认值
-        }
+        customTankType = Objects.requireNonNullElse(t, TankType.MEDIUM);
     }
 
     public TankType getCustomTankType() {
+        System.out.println(customTankType);
         return customTankType;
     }
 
     public void setSelectedMap(Maps map) {
-        if (map != null) {
-            selectedMap = map;
-        }
+        selectedMap = Objects.requireNonNullElse(map, Maps.DUST_3);
     }
 
     public Maps getSelectedMap() {
@@ -36,9 +33,7 @@ public class GameConfig {
     }
 
     public void setSelectedDifficulty(Difficulty d) {
-        if (d != null) {
-            selectedDifficulty = d;
-        }
+        selectedDifficulty = Objects.requireNonNullElse(d, Difficulty.MEDIUM);
     }
 
     public Difficulty getSelectedDifficulty() {

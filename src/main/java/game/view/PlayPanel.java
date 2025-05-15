@@ -3,16 +3,10 @@ package main.java.game.view;
 import main.java.game.controller.GameController;
 import main.java.game.manager.MapManager;
 import main.java.game.model.Direction;
-import main.java.game.model.GameConfig;
 import main.java.game.model.Tank;
-
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.Random;
 
 
@@ -34,19 +28,30 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
 
         top.add(pause);
 
+        // 注册组件监听器，当面板切换时延迟初始化
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                mapPanel.initialGame();
+            }
+        });
+    }
+
+    public APanel getMapPanel() {
+        return mapPanel;
     }
 }
 
 class MapPanel extends APanel {
     private final int GRID_WIDTH = 40;
-    private GameController gameController = new GameController();
+    private GameController gameController;
     private MapManager mapManager;
+    private Timer gameTimer;
 
     public MapPanel() {
         setPreferredSize(new Dimension(800, 600));
         mapManager = new MapManager(600/GRID_WIDTH, 800/GRID_WIDTH); // 15 20
-        setFocusable(true);
-        requestFocusInWindow();
+
         setVisible(true);
 
         // 初始化地图元素
@@ -54,20 +59,41 @@ class MapPanel extends APanel {
             //case Maps.DUST_3 -> mapManager.dust_3();
         //}
 
-        // 键盘事件处理
-        setupKeyBindings();
+    }
 
-        Timer timer = new Timer(32, e -> {
+    /*
+    延迟初始化gameController，使坦克类型、选择难度正确传递
+    同时游戏线程和键盘监听也将在此调用
+     */
+
+    public void initialGame() {
+        if (gameController == null) {
+            gameController = new GameController();
+        }
+        if (gameTimer != null && gameTimer.isRunning()) {
+            gameTimer.stop();
+        }
+
+        gameTimer = new Timer(32, e -> {
+            setFocusable(true);
+            requestFocusInWindow();
             repaint();
-            gameController.getCustomTank().move();
-            gameController.updateBullets(); // 更新子弹位置
-            for(int i=0;i<gameController.getEnemyTanks().size();i++) {
-                gameController.getEnemyTanks().get(i).move();
-                handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i)); // 随机移动和射击
+
+            if (gameController != null) {
+                gameController.getCustomTank().move();
+                gameController.updateBullets();
+
+                for(int i=0;i<gameController.getEnemyTanks().size();i++) {
+                    gameController.getEnemyTanks().get(i).move();
+                    handleEnemyTankBehaviour(gameController.getEnemyTanks().get(i));
+                }
             }
         });
-        timer.start();
+        gameTimer.start();
+        // 键盘事件处理
+        this.setupKeyBindings();
     }
+
 
     // 处理键位绑定
     private void setupKeyBindings() {
@@ -168,7 +194,9 @@ class MapPanel extends APanel {
                 }
             }
         }
-        gameController.drawComponents(g);
+        if(gameController != null) {
+            gameController.drawComponents(g);
+        }
     }
 }
 
