@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Bullet implements AMove {
+    public final int SIZE = 17;
     private int bx, by, attack;
     private Direction bdir; // 默认初始化
     private int bspeed = 4;
@@ -18,6 +19,7 @@ public class Bullet implements AMove {
         this.bx = x;
         this.by = y;
         this.bdir = dir;
+        this.attack = 50; // 炮弹伤害50
         sprite = SpritesManager.getInstance().loadBullet(); // 加载子弹图像
     }
 
@@ -65,10 +67,10 @@ public class Bullet implements AMove {
 
     public void draw(Graphics g) {
         switch (bdir) {
-            case UP -> g.drawImage(sprite, this.bx, this.by-34+17, 34, 34, null);
-            case RIGHT -> g.drawImage(sprite, this.bx+34-17, this.by, 34, 34, null);
-            case DOWN -> g.drawImage(sprite, this.bx, this.by+34-17, 34, 34, null);
-            case LEFT -> g.drawImage(sprite, this.bx-34+17, this.by, 34, 34, null);
+            case UP -> g.drawImage(sprite, this.bx-17, this.by-17-34+17, 34, 34, null);
+            case RIGHT -> g.drawImage(sprite, this.bx-17+34-17, this.by-17, 34, 34, null);
+            case DOWN -> g.drawImage(sprite, this.bx-17, this.by-17+34-17, 34, 34, null);
+            case LEFT -> g.drawImage(sprite, this.bx-17-34+17, this.by-17, 34, 34, null);
         }
     }
 }

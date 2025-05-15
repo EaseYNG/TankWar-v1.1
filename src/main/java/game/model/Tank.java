@@ -18,15 +18,15 @@ import java.util.List;
  */
 public class Tank implements AMove {
     // 坦克基本属性
+    public final int SIZE = 34;
     public int ax;
     public int ay; // 坐标
-    public TankType atype;
-    public Direction adir;
-    public int speed;
-    public int health;
-    public int attack;
-    public final int MAX_AMMO = 5; // 默认弹药5
-    public int currentAmmo = 0; // 目前弹药 - index = 0
+    private TankType atype;
+    private Direction adir;
+    private int speed;
+    private int health;
+    private final int MAX_AMMO = 5; // 默认弹药5
+    private int currentAmmo = 0; // 目前弹药 - index = 0
     public boolean isEmpty = false; // 弹夹是否为空
 
 
@@ -57,15 +57,10 @@ public class Tank implements AMove {
     public void setType(TankType t) { // 工厂方法调用设置基础属性
         if(t!=null){
             this.atype = t;
-            this.attack = t.getAttack();
             this.health = t.getHealth();
             this.speed = t.getSpeed();
         }
         // loadSprites
-    }
-
-    public int getAttack() {
-        return this.attack;
     }
 
     public int getHealth() {
@@ -116,10 +111,10 @@ public class Tank implements AMove {
     // 绘制
     public void draw(Graphics g) {
         switch (this.getDir()) {
-            case Direction.UP -> g.drawImage(this.getSpritesF().get(0), this.getX(), this.getY(), null);
-            case Direction.RIGHT -> g.drawImage(this.getSpritesF().get(1), this.getX(), this.getY(), null);
-            case Direction.DOWN -> g.drawImage(this.getSpritesF().get(2), this.getX(), this.getY(), null);
-            case Direction.LEFT -> g.drawImage(this.getSpritesF().get(3), this.getX(), this.getY(), null);
+            case Direction.UP -> g.drawImage(this.getSpritesF().get(0), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+            case Direction.RIGHT -> g.drawImage(this.getSpritesF().get(1), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+            case Direction.DOWN -> g.drawImage(this.getSpritesF().get(2), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+            case Direction.LEFT -> g.drawImage(this.getSpritesF().get(3), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
         }
     }
 

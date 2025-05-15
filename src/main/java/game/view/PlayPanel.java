@@ -4,6 +4,7 @@ import main.java.game.controller.GameController;
 import main.java.game.manager.MapManager;
 import main.java.game.model.Direction;
 import main.java.game.model.Tank;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -50,8 +51,7 @@ class MapPanel extends APanel {
 
     public MapPanel() {
         setPreferredSize(new Dimension(800, 600));
-        mapManager = new MapManager(600/GRID_WIDTH, 800/GRID_WIDTH); // 15 20
-
+        setBackground(Color.BLACK);
         setVisible(true);
 
         // 初始化地图元素
@@ -62,7 +62,7 @@ class MapPanel extends APanel {
     }
 
     /*
-    延迟初始化gameController，使坦克类型、选择难度正确传递
+    延迟初始化gameController，gameTimer，使坦克类型、选择难度正确传递
     同时游戏线程和键盘监听也将在此调用
      */
 
@@ -176,24 +176,7 @@ class MapPanel extends APanel {
     protected void paintComponent(Graphics g) { // 绘制地图及坦克等组件
         super.paintComponent(g);
         // 绘制地图
-        for(int i=0;i<mapManager.getCols();i++) {
-            for (int j=0;j<mapManager.getCols();j++) {
-                switch (mapManager.getGrid()[i][j]) {
-                    case EMPTY -> {
-                        g.setColor(Color.WHITE);
-                        g.fillRect(j*GRID_WIDTH, i*GRID_WIDTH, GRID_WIDTH, GRID_WIDTH);
-                    }
-                    case BRICK -> {
-                        g.setColor(Color.RED);
-                        g.fillRect(j*GRID_WIDTH, i*GRID_WIDTH, GRID_WIDTH, GRID_WIDTH);
-                    }
-                    case SPAWN -> {
-                        g.setColor(Color.GREEN);
-                        g.fillRect(j*GRID_WIDTH, i*GRID_WIDTH, GRID_WIDTH, GRID_WIDTH);
-                    }
-                }
-            }
-        }
+
         if(gameController != null) {
             gameController.drawComponents(g);
         }

@@ -56,8 +56,8 @@ public class GameController {
             Bullet bullet = iterator.next();
             bullet.move();
             // 移除超出屏幕的子弹
-            if (bullet.getBx() < 0 || bullet.getBx() > 800 ||
-                    bullet.getBy() < 0 || bullet.getBy() > 600) {
+            if (bullet.getBx() <= bullet.SIZE || bullet.getBx() >= (800-bullet.SIZE) ||
+                    bullet.getBy() <= bullet.SIZE || bullet.getBy() >= (600-bullet.SIZE)) {
                 iterator.remove();
             }
         }
