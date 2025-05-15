@@ -2,6 +2,7 @@ package main.java.game.view;
 
 import main.java.game.controller.GameController;
 import main.java.game.manager.MapManager;
+import main.java.game.manager.SpritesManager;
 import main.java.game.model.Direction;
 import main.java.game.model.Tank;
 
@@ -15,7 +16,11 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
     private HUD top = new HUD();
     private HUD bottom = new HUD();
     private MapPanel mapPanel = new MapPanel();
-    private JButton pause = ButtonFactory.createButton("||");
+    private JButton pause = new JButton();
+    private JButton volumeUp = new JButton();
+    private JButton volumeDown = new JButton();
+    private JLabel hp = new JLabel("Health:");
+    private JLabel currentHp = new JLabel();
 
 
     public PlayPanel() {
@@ -25,9 +30,36 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
         add(top, BorderLayout.NORTH);
         add(bottom, BorderLayout.SOUTH);
         add(mapPanel, BorderLayout.CENTER);
+
         mapPanel.requestFocusInWindow();
 
+        // HUD设置
+        pause.setIcon(SpritesManager.getInstance().loadPause());
+        volumeUp.setIcon(SpritesManager.getInstance().loadVolumeUp());
+        volumeDown.setIcon(SpritesManager.getInstance().loadVolumeDown());
+        pause.setSize(new Dimension(30, 30));
+        volumeUp.setSize(new Dimension(30, 30));
+        volumeDown.setSize(new Dimension(30, 30));
+
         top.add(pause);
+        top.add(volumeUp);
+        top.add(volumeDown);
+
+        pause.setLocation(770,0);
+        volumeUp.setLocation(740,0);
+        volumeDown.setLocation(710,0);
+
+        hp.setSize(new Dimension(100,30));
+        currentHp.setSize(new Dimension(30,30));
+
+        bottom.add(hp);
+        bottom.add(currentHp);
+
+        hp.setLocation(0,0);
+        currentHp.setLocation(140,0);
+
+        top.setVisible(true);
+        bottom.setVisible(true);
 
         // 注册组件监听器，当面板切换时延迟初始化
         addComponentListener(new ComponentAdapter() {
@@ -40,6 +72,10 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
 
     public APanel getMapPanel() {
         return mapPanel;
+    }
+
+    public void updateCurrentHP(Tank tank) {
+        currentHp.setText(String.valueOf(tank.getCurrentHealth()));
     }
 }
 
@@ -65,7 +101,6 @@ class MapPanel extends APanel {
     延迟初始化gameController，gameTimer，使坦克类型、选择难度正确传递
     同时游戏线程和键盘监听也将在此调用
      */
-
     public void initialGame() {
         if (gameController == null) {
             gameController = new GameController();
@@ -73,7 +108,7 @@ class MapPanel extends APanel {
         if (gameTimer != null && gameTimer.isRunning()) {
             gameTimer.stop();
         }
-
+        // 游戏线程
         gameTimer = new Timer(32, e -> {
             setFocusable(true);
             requestFocusInWindow();
@@ -186,7 +221,6 @@ class MapPanel extends APanel {
 class HUD extends APanel {
     public HUD() {
         setPreferredSize(new Dimension(800, 30));
-        setBackground(Color.GRAY);
-        setVisible(true);
+        setBackground(Color.BLACK);
     }
 }

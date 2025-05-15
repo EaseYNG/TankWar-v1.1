@@ -25,6 +25,7 @@ public class Tank implements AMove {
     private Direction adir;
     private int speed;
     private int health;
+    private int currentHealth;
     private final int MAX_AMMO = 5; // 默认弹药5
     private int currentAmmo = 0; // 目前弹药 - index = 0
     public boolean isEmpty = false; // 弹夹是否为空
@@ -41,6 +42,7 @@ public class Tank implements AMove {
         this.ax = x;
         this.ay = y;
         this.adir = Direction.UP; // 初始方向
+        currentHealth = this.health;
         setType(atype); // 设置初始类型 及类型属性
         // 加载图片
         spritesF = loadTankF(this.atype);
@@ -66,7 +68,7 @@ public class Tank implements AMove {
     public int getHealth() {
         return this.health;
     }
-
+    public int getCurrentHealth() {return this.currentHealth;}
     public int getSpeed() {
         return this.speed;
     }
