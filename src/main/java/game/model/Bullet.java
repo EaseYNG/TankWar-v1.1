@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Bullet implements AMove {
-    public final int SIZE = 17;
+public class Bullet {
+    public static final int SIZE = 17;
     private int bx, by, attack;
     private Direction bdir; // 默认初始化
     private int bspeed = 4;
@@ -55,7 +55,6 @@ public class Bullet implements AMove {
         return sprite;
     }
 
-    @Override
     public void move() {
         switch (bdir) {
             case Direction.UP -> by -= bspeed;

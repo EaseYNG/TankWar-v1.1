@@ -3,12 +3,14 @@ package main.java.game.view;
 import main.java.game.controller.GameController;
 import main.java.game.manager.MapManager;
 import main.java.game.manager.SpritesManager;
+import main.java.game.model.Attackable;
 import main.java.game.model.Direction;
 import main.java.game.model.Tank;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -129,6 +131,10 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
                 if (gameController != null) {
                     gameController.getCustomTank().move();
                     gameController.updateBullets();
+                    // 碰撞检测
+                    gameController.crashListen();
+                    gameController.hpListen();
+                    gameController.shotListen();
 
                     for(int i=0;i<gameController.getEnemyTanks().size();i++) {
                         gameController.getEnemyTanks().get(i).move();
@@ -219,7 +225,7 @@ public class PlayPanel extends APanel { // 控制HUD和地图等组件绘制
 
             if(rnd.nextDouble(0,1)<=0.01) {
                 enemy.shoot(gameController);
-                enemy.isEmpty = false; // 敌人无空弹匣逻辑
+                enemy.setEmpty(false); // 敌人无空弹匣逻辑
             }
         }
 

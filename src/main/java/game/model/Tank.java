@@ -1,7 +1,6 @@
 package main.java.game.model;
 
 import main.java.game.controller.GameController;
-import main.java.game.manager.SpritesManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,9 +15,9 @@ import java.util.List;
 构造器参数为坐标，并对方向进行初始化
 
  */
-public class Tank implements AMove {
+public class Tank implements Attackable {
     // 坦克基本属性
-    public final int SIZE = 34;
+    public static final int SIZE = 34;
     public int ax;
     public int ay; // 坐标
     private TankType atype;
@@ -28,7 +27,8 @@ public class Tank implements AMove {
     private int currentHealth;
     private final int MAX_AMMO = 5; // 默认弹药5
     private int currentAmmo = 0; // 目前弹药 - index = 0
-    public boolean isEmpty = false; // 弹夹是否为空
+    private boolean isEmpty = false; // 弹夹是否为空
+    private boolean isFirst = true; // 绘制检测
 
 
     private List<BufferedImage> spritesF;
@@ -42,8 +42,8 @@ public class Tank implements AMove {
         this.ax = x;
         this.ay = y;
         this.adir = Direction.UP; // 初始方向
-        currentHealth = this.health;
         setType(atype); // 设置初始类型 及类型属性
+        currentHealth = this.health;
         // 加载图片
         spritesF = loadTankF(this.atype);
         spritesS = loadTankS(this.atype);
@@ -88,8 +88,16 @@ public class Tank implements AMove {
     public int getY() {
         return ay;
     }
+    public boolean isFirst() {
+        return isFirst;
+    }
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+    public void setEmpty(boolean b) {
+        this.isEmpty = b;
+    }
 
-    @Override
     public void move() {
         switch (this.adir) {
             case Direction.UP -> this.ay -= this.speed;
@@ -111,12 +119,22 @@ public class Tank implements AMove {
 
     // 绘制
     public void draw(Graphics g) {
-        switch (this.getDir()) {
-            case Direction.UP -> g.drawImage(this.getSpritesF().get(0), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
-            case Direction.RIGHT -> g.drawImage(this.getSpritesF().get(1), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
-            case Direction.DOWN -> g.drawImage(this.getSpritesF().get(2), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
-            case Direction.LEFT -> g.drawImage(this.getSpritesF().get(3), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+        if(isFirst()) {
+            switch (this.getDir()) {
+                case Direction.UP -> g.drawImage(this.getSpritesF().get(0), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.RIGHT -> g.drawImage(this.getSpritesF().get(1), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.DOWN -> g.drawImage(this.getSpritesF().get(2), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.LEFT -> g.drawImage(this.getSpritesF().get(3), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+            }
+        } else {
+            switch (this.getDir()) {
+                case Direction.UP -> g.drawImage(this.getSpritesS().get(0), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.RIGHT -> g.drawImage(this.getSpritesS().get(1), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.DOWN -> g.drawImage(this.getSpritesS().get(2), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+                case Direction.LEFT -> g.drawImage(this.getSpritesS().get(3), this.getX()-SIZE/2, this.getY()-SIZE/2, null);
+            }
         }
+        isFirst = !isFirst;
     }
 
     // 射击
@@ -232,5 +250,15 @@ public class Tank implements AMove {
             }
         }
         return spritesS;
+    }
+
+    @Override
+    public void shot() {
+        this.currentHealth -= 50;
+    }
+
+    @Override
+    public void crashed() {
+        this.currentHealth -= 25;
     }
 }
